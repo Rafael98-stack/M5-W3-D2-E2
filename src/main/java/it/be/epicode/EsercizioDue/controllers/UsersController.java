@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -38,6 +39,21 @@ public class UsersController {
         return this.usersService.getUsers(page, size, orderBy);
     }
 
+@GetMapping("/me")
+public User getProfile(@AuthenticationPrincipal User currentAuthenticatedUser) {
+        return currentAuthenticatedUser;
+}
+
+    @PutMapping("/me")
+    public User getMeAndUpdate(@AuthenticationPrincipal User currentAuthenticatedUser,@RequestBody User updatedUser) {
+        return this.findByIdAndUpdate(currentAuthenticatedUser.getId(),updatedUser);
+    }
+
+    @DeleteMapping("/me")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void getMeAndDelete(@AuthenticationPrincipal User currentAuthenticatedUser) {
+         this.findByIdAndDelete(currentAuthenticatedUser.getId());
+    }
 
     @GetMapping("/{id}")
     public User findById(@PathVariable UUID id) {

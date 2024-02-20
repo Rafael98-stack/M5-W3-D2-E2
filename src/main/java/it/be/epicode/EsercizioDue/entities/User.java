@@ -1,5 +1,6 @@
 package it.be.epicode.EsercizioDue.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"credentialsNonExpired","accountNonExpired","authorities","username","accountNonLocked","enabled"})
 public class User implements UserDetails {
 
     @Id

@@ -2,9 +2,12 @@ package it.be.epicode.EsercizioDue.exceptions;
 
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +35,11 @@ public class ExceptionsHandler {
         return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
     }
 
+@ExceptionHandler(AccessDeniedException.class)
+@ResponseStatus(HttpStatus.FORBIDDEN)
+public ErrorsPayload handleAccessDenied(AccessDeniedException ex) {
+        return new ErrorsPayload("Non hai L'accesso a questo endpoint", LocalDateTime.now());
+}
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
